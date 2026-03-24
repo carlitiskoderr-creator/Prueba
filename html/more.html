@@ -1,0 +1,310 @@
+< !DOCTYPE html >
+    <html lang="es">
+        <head>
+            <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Figura LEGO - Solo Const</title>
+                    <style>
+                        body {
+                            display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        min-height: 100vh;
+                        margin: 0;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        font-family: sans-serif;
+        }
+                        canvas {
+                            border - radius: 20px;
+                        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                        background: white;
+                        cursor: pointer;
+                        transition: transform 0.2s;
+        }
+                        canvas:hover {
+                            transform: scale(1.02);
+        }
+                    </style>
+                </head>
+                <body>
+                    <canvas id="lienzo" width="400" height="500"></canvas>
+
+                    <script>
+        // 1. CONFIGURACIÓN Y CONSTANTES
+                        const canvas = document.getElementById('lienzo');
+                        const ctx = canvas.getContext('2d');
+
+                        // Objeto de configuración (colores y medidas)
+                        const config = {
+                            piel: '#FCD34D',
+                        pielSombra: '#E5B83C',
+                        cabello: '#8B6F47',
+                        cabelloOscuro: '#6B5637',
+                        traje: '#1E4D8B',
+                        trajeOscuro: '#153566',
+                        chaleco: '#6B7280',
+                        corbata: '#FCD34D',
+                        gafas: '#1E3A5F',
+                        blanco: '#FFFFFF',
+                        negro: '#1F2937'
+        };
+
+                        // Objeto de estado (para animación sin usar 'let')
+                        const estado = {
+                            parpadeo: false,
+                        ultimoParpadeo: 0,
+                        colorCorbata: config.corbata
+        };
+
+        // 2. FUNCIONES DE DIBUJO (Utilidades)
+        const dibujarRectangulo = (x, y, w, h, color, borde = null) => {
+                            ctx.fillStyle = color;
+                        ctx.fillRect(x, y, w, h);
+                        if (borde) {
+                            ctx.strokeStyle = borde;
+                        ctx.strokeRect(x, y, w, h);
+            }
+        };
+
+        const dibujarCirculo = (x, y, radio, color) => {
+                            ctx.beginPath();
+                        ctx.arc(x, y, radio, 0, Math.PI * 2);
+                        ctx.fillStyle = color;
+                        ctx.fill();
+        };
+
+        const dibujarElipse = (x, y, rx, ry, color) => {
+                            ctx.beginPath();
+                        ctx.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2);
+                        ctx.fillStyle = color;
+                        ctx.fill();
+        };
+
+        const dibujarCamino = (dibujoFn, color, grosor = 1, relleno = null) => {
+                            ctx.beginPath();
+                        dibujoFn();
+                        if (relleno) {
+                            ctx.fillStyle = relleno;
+                        ctx.fill();
+            }
+                        ctx.strokeStyle = color;
+                        ctx.lineWidth = grosor;
+                        ctx.stroke();
+        };
+
+        // 3. MODELO DE LA FIGURA (Partes del cuerpo)
+        const dibujarCuerpo = () => {
+                            // Chaqueta (Forma personalizada)
+                            dibujarCamino(() => {
+                                ctx.moveTo(60, 280);
+                                ctx.quadraticCurveTo(60, 260, 80, 250);
+                                ctx.lineTo(280, 250);
+                                ctx.quadraticCurveTo(300, 260, 300, 280);
+                                ctx.lineTo(300, 450);
+                                ctx.lineTo(60, 450);
+                            }, config.trajeOscuro, 2, config.traje);
+
+                        // Chaleco
+                        dibujarRectangulo(120, 260, 120, 190, config.chaleco, '#4B5563');
+
+            // Camisa (Triángulo)
+            dibujarCamino(() => {
+                            ctx.moveTo(140, 260);
+                        ctx.lineTo(180, 310);
+                        ctx.lineTo(220, 260);
+            }, null, 0, config.blanco);
+
+            // Corbata
+            dibujarCamino(() => {
+                            ctx.moveTo(170, 275);
+                        ctx.lineTo(190, 275);
+                        ctx.lineTo(185, 340);
+                        ctx.lineTo(175, 340);
+            }, '#F59E0B', 1, estado.colorCorbata);
+
+            // Nudo corbata
+            dibujarCamino(() => {
+                            ctx.moveTo(175, 275);
+                        ctx.lineTo(185, 275);
+                        ctx.lineTo(180, 285);
+            }, null, 0, '#F59E0B');
+
+                        // Botones (Usando forEach para evitar 'let i')
+                        const posicionesBotones = [310, 330, 350, 370];
+            posicionesBotones.forEach(y => {
+                            dibujarCirculo(180, y, 4, '#374151');
+            });
+
+            // Solapas
+            dibujarCamino(() => {
+                            ctx.moveTo(140, 260);
+                        ctx.lineTo(120, 320);
+                        ctx.lineTo(130, 320);
+                        ctx.lineTo(145, 270);
+            }, null, 0, config.traje);
+            
+            dibujarCamino(() => {
+                            ctx.moveTo(220, 260);
+                        ctx.lineTo(240, 320);
+                        ctx.lineTo(230, 320);
+                        ctx.lineTo(215, 270);
+            }, null, 0, config.traje);
+        };
+
+        const dibujarCuello = () => {
+                            dibujarRectangulo(155, 235, 50, 30, config.piel, config.pielSombra);
+        };
+
+        const dibujarCabeza = () => {
+                            // Cabeza base
+                            // Simulamos rectángulo redondeado con camino
+                            dibujarCamino(() => {
+                                ctx.roundRect(105, 110, 150, 130, 10);
+                            }, config.pielSombra, 2, config.piel);
+
+                        // Parte superior curva
+                        dibujarElipse(180, 115, 65, 15, config.piel);
+            // Borde superior
+            dibujarCamino(() => {
+                            ctx.ellipse(180, 115, 65, 15, 0, 0, Math.PI * 2);
+            }, config.pielSombra, 2);
+        };
+
+        const dibujarCabello = () => {
+                            ctx.fillStyle = config.cabello;
+
+                        // Mechones principales
+                        const mechones = [
+                        {x: 180, y: 105, rx: 70, ry: 35}, // Base
+                        {x: 130, y: 100, rx: 20, ry: 25}, // Izq
+                        {x: 230, y: 100, rx: 20, ry: 25}, // Der
+                        {x: 150, y: 85, rx: 25, ry: 20},  // Arriba Izq
+                        {x: 210, y: 85, rx: 25, ry: 20},  // Arriba Der
+                        {x: 180, y: 80, rx: 30, ry: 18}   // Top
+                        ];
+
+            mechones.forEach(m => dibujarElipse(m.x, m.y, m.rx, m.ry, config.cabello));
+
+                        // Laterales
+                        ctx.strokeStyle = config.cabelloOscuro;
+                        ctx.lineWidth = 8;
+                        ctx.lineCap = 'round';
+            
+            dibujarCamino(() => {
+                            ctx.moveTo(110, 110);
+                        ctx.quadraticCurveTo(105, 130, 108, 150);
+            }, config.cabelloOscuro, 8);
+            
+            dibujarCamino(() => {
+                            ctx.moveTo(250, 110);
+                        ctx.quadraticCurveTo(255, 130, 252, 150);
+            }, config.cabelloOscuro, 8);
+        };
+
+        const dibujarCara = () => {
+            // Gafas
+            const dibujarLente = (x) => {
+                            ctx.beginPath();
+                        ctx.roundRect(x, 145, 50, 35, 8);
+                        ctx.fillStyle = config.gafas;
+                        ctx.fill();
+                        ctx.strokeStyle = '#0F2744';
+                        ctx.lineWidth = 3;
+                        ctx.stroke();
+            };
+
+                        dibujarLente(125); // Izq
+                        dibujarLente(185); // Der
+
+                        // Puente gafas
+                        dibujarRectangulo(175, 155, 10, 8, config.gafas);
+
+            // Ojos
+            const dibujarOjo = (x, cerrado) => {
+                if (cerrado) {
+                            dibujarElipse(x, 162, 12, 2, config.piel);
+                } else {
+                            dibujarElipse(x, 162, 12, 14, config.blanco);
+                        dibujarCirculo(x, 162, 7, config.negro);
+                        dibujarCirculo(x + 2, 160, 3, config.blanco); // Brillo
+                }
+            };
+
+                        dibujarOjo(150, estado.parpadeo);
+                        dibujarOjo(210, estado.parpadeo);
+
+            // Boca
+            dibujarCamino(() => {
+                            ctx.moveTo(155, 195);
+                        ctx.quadraticCurveTo(180, 205, 205, 195);
+            }, '#B45309', 3);
+
+            // Cejas
+            dibujarCamino(() => {
+                            ctx.moveTo(135, 138);
+                        ctx.quadraticCurveTo(150, 135, 165, 138);
+            }, config.cabelloOscuro, 2);
+            
+            dibujarCamino(() => {
+                            ctx.moveTo(195, 138);
+                        ctx.quadraticCurveTo(210, 135, 225, 138);
+            }, config.cabelloOscuro, 2);
+        };
+
+        // 4. LÓGICA PRINCIPAL
+        const renderizar = () => {
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        dibujarCuerpo();
+                        dibujarCuello();
+                        dibujarCabeza();
+                        dibujarCabello();
+                        dibujarCara();
+        };
+
+        const animar = (tiempoActual) => {
+            // Lógica de parpadeo sin usar 'let' para estado global
+            if (tiempoActual - estado.ultimoParpadeo > 4000) {
+                            estado.parpadeo = true;
+                if (tiempoActual - estado.ultimoParpadeo > 4150) {
+                            estado.parpadeo = false;
+                        estado.ultimoParpadeo = tiempoActual;
+                }
+            }
+
+                        renderizar();
+                        requestAnimationFrame(animar);
+        };
+
+        // 5. EVENTOS
+        const cambiarColorCorbata = () => {
+            const colores = ['#FCD34D', '#EF4444', '#3B82F6', '#10B981', '#8B5CF6'];
+                        // Elegir color aleatorio
+                        const indice = Math.floor(Math.random() * colores.length);
+                        estado.colorCorbata = colores[indice];
+                        renderizar();
+        };
+
+        const manejarHover = (e) => {
+            const rect = canvas.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+
+            // Detectar cabeza
+            if (x > 105 && x < 255 && y > 80 && y < 240) {
+                            canvas.style.cursor = 'pointer';
+            } else {
+                            canvas.style.cursor = 'default';
+            }
+        };
+
+                        // Inicialización
+                        canvas.addEventListener('click', cambiarColorCorbata);
+                        canvas.addEventListener('mousemove', manejarHover);
+
+                        // Arrancar
+                        renderizar();
+                        requestAnimationFrame(animar);
+
+                    </script>
+                </body>
+            </html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEGO Figure - SVG</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .lego-container {
+            width: 400px;
+            height: 500px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 20px;
+        }
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="lego-container">
+        <svg viewBox="0 0 360 450" xmlns="http://www.w3.org/2000/svg">
+            <!-- Definiciones para reutilizar -->
+            <defs>
+                <!-- Gradiente para el cabello -->
+                <linearGradient id="hairGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#8B6F47;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#6B5637;stop-opacity:1" />
+                </linearGradient>
+                <!-- Sombra suave -->
+                <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="2" dy="4" stdDeviation="3" flood-opacity="0.2"/>
+                </filter>
+            </defs>
+            
+            <!-- CUERPO / TRAJE -->
+            <!-- Chaqueta azul (hombros y torso) -->
+            <path d="M 60 280 Q 60 260 80 250 L 280 250 Q 300 260 300 280 L 300 450 L 60 450 Z" 
+                  fill="#1E4D8B" stroke="#153566" stroke-width="2"/>
+            
+            <!-- Chaleco gris -->
+            <rect x="120" y="260" width="120" height="190" 
+                  fill="#6B7280" stroke="#4B5563" stroke-width="1"/>
+            
+            <!-- Camisa blanca (triángulo del cuello) -->
+            <path d="M 140 260 L 180 310 L 220 260 Z" fill="#FFFFFF"/>
+            
+            <!-- Cuello de camisa (lado izquierdo) -->
+            <path d="M 140 260 L 160 260 L 180 290 L 170 290 Z" fill="#FFFFFF"/>
+            
+            <!-- Cuello de camisa (lado derecho) -->
+            <path d="M 220 260 L 200 260 L 180 290 L 190 290 Z" fill="#FFFFFF"/>
+            
+            <!-- Corbata amarilla -->
+            <path d="M 170 275 L 190 275 L 185 340 L 175 340 Z" 
+                  fill="#FCD34D" stroke="#F59E0B" stroke-width="1"/>
+            <path d="M 175 275 L 185 275 L 180 285 Z" fill="#F59E0B"/>
+            
+            <!-- Botones del chaleco -->
+            <circle cx="180" cy="310" r="4" fill="#374151"/>
+            <circle cx="180" cy="330" r="4" fill="#374151"/>
+            <circle cx="180" cy="350" r="4" fill="#374151"/>
+            <circle cx="180" cy="370" r="4" fill="#374151"/>
+            
+            <!-- Solapas de la chaqueta -->
+            <path d="M 140 260 L 120 320 L 130 320 L 145 270 Z" fill="#1E4D8B"/>
+            <path d="M 220 260 L 240 320 L 230 320 L 215 270 Z" fill="#1E4D8B"/>
+            
+            <!-- CUELLO -->
+            <rect x="155" y="235" width="50" height="30" fill="#FCD34D" stroke="#E5B83C" stroke-width="1"/>
+            
+            <!-- CABEZA -->
+            <!-- Forma básica de cabeza LEGO -->
+            <rect x="105" y="110" width="150" height="130" rx="10" ry="10" 
+                  fill="#FCD34D" stroke="#E5B83C" stroke-width="2" filter="url(#shadow)"/>
+            
+            <!-- Parte superior de la cabeza (curva) -->
+            <ellipse cx="180" cy="115" rx="65" ry="15" fill="#FCD34D" stroke="#E5B83C" stroke-width="2"/>
+            
+            <!-- CABELLO -->
+            <!-- Base del cabello -->
+            <ellipse cx="180" cy="105" rx="70" ry="35" fill="url(#hairGradient)"/>
+            
+            <!-- Mechones de cabello (ondas) -->
+            <ellipse cx="130" cy="100" rx="20" ry="25" fill="url(#hairGradient)"/>
+            <ellipse cx="230" cy="100" rx="20" ry="25" fill="url(#hairGradient)"/>
+            <ellipse cx="150" cy="85" rx="25" ry="20" fill="url(#hairGradient)"/>
+            <ellipse cx="210" cy="85" rx="25" ry="20" fill="url(#hairGradient)"/>
+            <ellipse cx="180" cy="80" rx="30" ry="18" fill="url(#hairGradient)"/>
+            
+            <!-- Detalles de cabello lateral -->
+            <path d="M 110 110 Q 105 130 108 150" stroke="#6B5637" stroke-width="8" fill="none" stroke-linecap="round"/>
+            <path d="M 250 110 Q 255 130 252 150" stroke="#6B5637" stroke-width="8" fill="none" stroke-linecap="round"/>
+            
+            <!-- CARA -->
+            <!-- GAFAS -->
+            <!-- Montura izquierda -->
+            <rect x="125" y="145" width="50" height="35" rx="8" ry="8" 
+                  fill="#1E3A5F" stroke="#0F2744" stroke-width="3"/>
+            <!-- Montura derecha -->
+            <rect x="185" y="145" width="50" height="35" rx="8" ry="8" 
+                  fill="#1E3A5F" stroke="#0F2744" stroke-width="3"/>
+            <!-- Puente de las gafas -->
+            <rect x="175" y="155" width="10" height="8" fill="#1E3A5F"/>
+            
+            <!-- Ojos (dentro de las gafas) -->
+            <!-- Ojo izquierdo -->
+            <ellipse cx="150" cy="162" rx="12" ry="14" fill="white"/>
+            <circle cx="150" cy="162" r="7" fill="#1F2937"/>
+            <circle cx="152" cy="160" r="3" fill="white"/>
+            
+            <!-- Ojo derecho -->
+            <ellipse cx="210" cy="162" rx="12" ry="14" fill="white"/>
+            <circle cx="210" cy="162" r="7" fill="#1F2937"/>
+            <circle cx="212" cy="160" r="3" fill="white"/>
+            
+            <!-- BOCA / SONRISA -->
+            <path d="M 155 195 Q 180 205 205 195" 
+                  stroke="#B45309" stroke-width="3" fill="none" stroke-linecap="round"/>
+            
+            <!-- CEJAS (opcional, sutiles) -->
+            <path d="M 135 138 Q 150 135 165 138" stroke="#6B5637" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M 195 138 Q 210 135 225 138" stroke="#6B5637" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+    </div>
+
+    <script>
+        // JavaScript para agregar interactividad
+        const svg = document.querySelector('svg');
+        const head = document.querySelectorAll('rect, ellipse, path');
+        
+        // Efecto hover en la cabeza
+        head.forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                element.style.transition = 'transform 0.3s ease';
+                element.style.transform = 'scale(1.02)';
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                element.style.transform = 'scale(1)';
+            });
+        });
+        
+        // Animación de parpadeo
+        function blink() {
+            const eyes = document.querySelectorAll('circle[fill="#1F2937"]');
+            eyes.forEach(eye => {
+                eye.setAttribute('ry', '1');
+                setTimeout(() => {
+                    eye.setAttribute('ry', '7');
+                }, 150);
+            });
+        }
+        
+        // Parpadeo cada 4 segundos
+        setInterval(blink, 4000);
+        
+        // Click para cambiar color de corbata
+        const tie = document.querySelector('path[d="M 170 275 L 190 275 L 185 340 L 175 340 Z"]');
+        const colors = ['#FCD34D', '#EF4444', '#3B82F6', '#10B981', '#8B5CF6'];
+        let colorIndex = 0;
+        
+        svg.addEventListener('click', () => {
+            colorIndex = (colorIndex + 1) % colors.length;
+            tie.setAttribute('fill', colors[colorIndex]);
+        });
+    </script>
+</body>
+</html>
